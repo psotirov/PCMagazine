@@ -1,0 +1,404 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta name="description" content="PC Magazine and Telerik contest - 2 round" />
+	<meta name="keywords" content="Game of life, contest, Telerik" />
+	<meta name="author" content="Pavel Sotirov, psotirov, p.sotirov@mail.bg" />
+	<title>Водонедорасли - psotirov</title>
+	<link rel="stylesheet" href="styles.css">
+ </head>
+<body>
+        <header>
+            <h1>Водонедорасли - psotirov</h1>
+			<nav>
+				<ul>
+						<li><a href="index.html">Начало</a></li>
+						<li id="selected"><a href="algae.html">За водонедораслите</a></li>
+						<li><a href="grow.html">Развитие</a></li>
+						<li><a href="plant.html">Отглеждане</a></li>
+						<li><input type="button" value = "Визуализация" onclick="window.open('show.html', '_blank',
+								'height=460, width=600, location=no, menubar=no, resizable=no, status=no, toolbar=no')" ></li>
+				</ul>			
+			</nav>
+        </header>
+		
+		<div id="wrapper">
+        <section>
+            <p>Местата, в които водонедораслите живеят се наричат “локви”. Съществената част от всяка локва е разграфена от астронавтите като квадратна 
+			решетка, като всяка клетка от тази решетка може да съдържа или точно едно водонедорасло (такава клетка наричаме жива), или да бъде празна 
+			(такава клетка наричаме мъртва), или да съдържа храна (водонедораслите фотосинтезират, но имат способности и да изяждат определени частици). 
+			Оказва се, че развитието на водонедораслите може да се моделира математически чрез известния клетъчен автомат “Играта на живота”.</p>
+			<img id="big" alt="Algae Reactor" src="res/algae_02.jpg" width="900" height="240" />
+            <p>“Играта на живота” не е игра в традиционния смисъл. Да си представим едно квадратно поле, което се състои от малки квадратни клетки, 
+			каквито са нашите  ”решетки” на локвите. Всяка клетка може да бъде жива или нежива (мъртва). Всяка клетка има ред и колона (координати), 
+			на които се намира в решетката. Всяка клетка също така има и съседи, които са най-много 8 на брой. Клетките, които са в някой от ъглите 
+			на решетката имат 3 съседа, а клетките, които са в край на решетката, без да са в ъгъл, имат 5 съседа. Играта на живота се “играе” на ходове, 
+			които астронавтите ще наричат единици време. За всяка клетка, в процеса на преминаване в следващата единица време (следващия ход), могат да се 
+			случат следните неща:</p><br />
+			<h3>Правила на “Играта на живота”</h3>
+			<dl>
+			<dt>Ако клетката е “жива”</dt>
+				<dd>И има 2 или 3 “живи” съседа в текущата единица време, тя остава “жива” в следващата единица време (ход). В противен случай клетката ще 
+				бъде “мъртва” в следващата единица време (ход).</dd>
+			<dt>Ако клетката е “мъртва”</dt>
+				<dd>И има точно 3 “живи” съседа в текущата единица време, тя ще стане “жива” в следващата единица време (ход). В противен случай клетката ще 
+				остане “мъртва” в следващата единица време (ход).</dd>
+			<dt>Примери</dt>
+				<dd>
+					<table>
+						<tr><th>Начало</th><th>Време+1</th><th>Време+2</th><th>&nbsp;</th>
+						<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+						<th>Начало</th><th>Време+1</th><th>Време+2</th><th>&nbsp;</th></tr>
+						<tr>
+							<td> <!--Model 1 - Initial -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 1 - Time + 1 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 1 - Time + 2 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td>умира</td>
+							
+							<td>&nbsp;</td>
+							
+							<td> <!--Model 4 - Initial -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 4 - Time + 1 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 4 - Time + 2 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td>БЛОК<br/>стабилен/постоянен<br/>BLOCK<br/>still live</td>							
+						</tr>
+						
+						<tr>
+							<td> <!--Model 2 - Initial -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 2 - Time + 1 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 2 - Time + 2 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td>умира</td>
+							
+							<td>&nbsp;</td>
+														
+							<td> <!--Model 5 - Initial -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 5 - Time + 1 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 5 - Time + 2 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td>МИГАЛКА<br/>осцилатор x2<br/>BLINKER<br/>oscilator x2</td>							
+						</tr>
+
+						<tr>
+							<td> <!--Model 3 - Initial -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 3 - Time + 1 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 3 - Time + 2 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td>умира</td>
+							
+							<td>&nbsp;</td>
+														
+							<td> <!--Model 6 - Initial -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="F">+</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 6 - Time + 1 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="F">+</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 6 - Time + 2 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="F">+</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>							
+							<td>КОШЕР<br/>стабилен/постоянен<br/>BEEHIVE<br/>still live</td>
+						</tr>
+					</table>
+				</dd>
+			</dl>
+			
+			<p>Играта на живота е известен клетъчен автомат, за който астронавтите знаят и са разучавали в Интернет. Правилата важат по същия начин за 
+			водонедораслите, с уговорката че ако имаме клетка с водонедорасло, то тя е жива, а ако водонедораслото умре, клетката става празна/мъртва 
+			т.е. тези термини ще бъдат ползвани като синоними по-нататък).</p><br />
+			<h3>Правила за Хранене и Качество на локвата при Водонедораслите</h3>
+			<dl>
+			<dt>Храната</dt>
+				<dd>В даден момент може да се окаже, че в клетка, в която има храна, трябва да се появи водонедорасло. В такъв случай храната бива изядена, 
+				като това прави водонедораслите в цялата локва “по-качествени“.</dd>
+			<dt>Качество на локва</dt>
+				<dd>Астронавтите искат да направят възможно най-добро развитие на водонедораслите за определено време. Затова те са измислили начин да 
+				оценяват определена “локва” за това колко добро е поколението в нея в произволен момент от времето. С две думи, качеството на локвата в 
+				определен момент от време е сбора на всички клетки съдържащи живи водонедорасли с броя клетки храна, които са били изядени, при условие че 
+				броят на живите клетки в този момент е различен от нула. Важно е да се отбележи, че ако в определен момент от време в локвата няма нито една 
+				жива клетка, то тогава качеството на поколението в локвата става нула (като няма поколение, няма качество).</dd>
+			<dt>Примери</dt>
+				<dd>
+					<table>
+						<tr><th>Храна</th><th>Засяване</th><th>Време+1</th><th>Време+2</th><th>Качество</th></tr>
+						<tr>
+							<td> <!--Model 1 - Initial -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="S">F</td><td class="S">F</td><td class="S">F</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 1 - Seed -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="S">F</td><td class="S">F</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 1 - Time + 1 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="S">F</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 1 - Time + 2 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td>УМИРА<br />0 водонедорасли<br />2 изядена храна<br />Качество на локвата: 0</td>							
+						</tr>
+						
+						<tr>							
+							<td> <!--Model 2 - Initial -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="S">F</td><td class="S">F</td><td class="S">F</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 2 - Seed -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="S">F</td><td class="S">F</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 2 - Time + 1 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="S">F</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 2 - Time + 2 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="S">F</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td>БЛОК<br />4 водонедорасли<br />3 изядена храна<br/>Качество на локвата: 7</td>							
+						</tr>
+
+						<tr>
+							<td> <!--Model 3 - Initial -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="S">F</td><td class="S">F</td><td class="S">F</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 3 - Seed -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 3 - Time + 1 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td> <!--Model 3 - Time + 2 -->
+								<table class="puddle">
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+									<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+								</table>
+							</td>
+							<td>МИГАЛКА<br />3 водонедорасли<br />5 изядена храна<br />Качество на локвата: 8</td>							
+						</tr>
+					</table>
+				</dd>
+			</dl>
+        </section>
+				
+		<aside>
+			<h4>Полезни връзки</h4>
+			<ul>
+				<li><a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life" target="_blank">Играта на Живота в Wikipedia</a></li>
+				<li><a href="http://www.ibiblio.org/lifepatterns/october1970.html" target="_blank">Анонсът на играта през 1970г</a></li>
+				<li><a href="http://www.math.com/students/wonders/life/life.html" target="_blank">Статия по темата в math.com</a></li>
+				<li><a href="http://www.ibiblio.org/lifepatterns/" target="_blank">Приложения и Java аплети, демонстриращи развитието на "организмите"</a></li>
+				<li><a href="http://cafaq.com/lifefaq/index.php" target="_blank">Celular automata FAQ</a></li>
+				<li><a href="http://jigsaw.w3.org/css-validator/check/referer">
+					<img width="88" height="31"	src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Valid HTML5 and CSS!" /></a></li>
+			</ul>
+		</aside>
+		</div>
+		
+        <footer>
+            <p>ЖИВА-БИРА InterGalactic Bottling Company EOOD</p>
+            <p>111-1234 9876 0000 BULGARISTAN Outer Limits galaxy, KOSTAFORD solar system, quadrant 1-15-145</p>
+            <address>Written by <a href="mailto:p.sotirov@mail.bg">psotirov</a>  &copy; 2013 All lefts reserved.</address>    
+        </footer>	
+</body>
+</html>
