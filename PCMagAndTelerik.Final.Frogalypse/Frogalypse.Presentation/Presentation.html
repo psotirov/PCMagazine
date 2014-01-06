@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>PC Magazine and Telerik Final Round - Frogalypse</title>
+    <meta charset="utf-8" />
+    <style>
+        body { width: 100%; }
+        h1, h3, h4 { text-align:center; margin:5px 0; padding:0; }
+        div#wrapper { width:90%; height:100%; margin:0 auto; background-color:#c2c6cc; }
+        #result { width: 90%; border: 1px solid black; padding: 5px; margin:5px auto; text-align:center; position:relative; }
+        .control { position:absolute; top:10px; border: 1px solid #c2c6cc; }
+        .control:hover { border: 1px solid black; }
+        #data {position:absolute; top:50px; right:10px; }
+        #right-arrow { right:10px; }
+        #play-animation { right:60px; }
+        #left-arrow { right:110px; }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <h1>PC Magazine and Telerik Final Round - Frogalypse</h1>
+        <h3>Algorithms combat visualization</h3>
+        <div id="result">
+              <div id="controls">
+                <img class="control" id="right-arrow" alt="Move Right Control" src="right-arrow.png"/>
+                <img class="control" id="play-animation" alt="Play Animation Control" src="play.png"/>
+                <img class="control" id="left-arrow" alt="Move Left Control" src="left-arrow.png"/>
+            </div>
+            <div id="data">
+                <h5>Algo Winner: <span id="algo_winner"></span></h5>
+                <h5>Pool Radius: <span id="pool_radius"></span></h5>
+                <h5>Frog 1</h5>
+                <h6>X Position: <span id="frog1_xpos"></span></h6>
+                <h6>Y Position: <span id="frog1_ypos"></span></h6>
+                <h5>Frog 2</h5>
+                <h6>X Position: <span id="frog2_xpos"></span></h6>
+                <h6>Y Position: <span id="frog2_ypos"></span></h6>
+            </div>
+            <canvas width="500" height="500">Canvas not supported</canvas>
+
+        </div>
+     </div>
+    <script type="text/javascript" src="data.js"></script>
+    <script type="text/javascript">
+        var index = 0;
+        var handler;
+        drawPool(index);
+        // var handler = setInterval(animate, 150);
+
+        document.getElementById("play-animation").addEventListener("click", function () {
+            if (!handler) {
+                handler = setInterval(animate, 100);
+            }
+            drawPool(index);
+        }, false);
+
+        document.getElementById("left-arrow").addEventListener("click", function () {
+            index--;
+            if (index < 0) {
+                index = 0;
+            } else {
+                drawPool(index);
+            }
+        }, false);
+
+        document.getElementById("right-arrow").addEventListener("click", function () {
+            index++;
+            if (!data[index]) {
+                index--;
+            } else {
+                drawPool(index);
+            }
+        }, false);
+
+        function animate() {
+            drawPool(index);
+            index++;
+            if (!data[index]) {
+                clearInterval(handler);
+                handler = 0;
+                index = 0;
+                drawPool(index);
+            }
+        }
+
+        function drawPool(index) {
+            // set 2d context, colors and line width
+            var ctx = document.getElementsByTagName("canvas")[0].getContext("2d");
+            ctx.clearRect(0, 0, 500, 500);
+            ctx.fillStyle = "#9CD"; 
+            ctx.strokeStyle = "#378";
+            ctx.lineWidth = 2;
+
+            //the pool
+            ctx.beginPath();
+            ctx.arc(250, 250, data[index].PoolRadius*2, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.stroke();
+            var winner = (results[0]) ? "left" : ((results[1]) ? "right" : "none");
+            document.getElementById("algo_winner").innerHTML = winner;
+            document.getElementById("pool_radius").innerHTML = data[index].PoolRadius.toFixed(2);
+            document.getElementById("frog1_xpos").innerHTML = data[index].Frogs[0].PosX.toFixed(2);
+            document.getElementById("frog1_ypos").innerHTML = data[index].Frogs[0].PosY.toFixed(2);
+            document.getElementById("frog2_xpos").innerHTML = data[index].Frogs[1].PosX.toFixed(2);
+            document.getElementById("frog2_ypos").innerHTML = data[index].Frogs[1].PosY.toFixed(2);
+
+            ctx.fillStyle = "#1A1";
+            ctx.strokeStyle = "#F00";
+            for (var i in data[index].Frogs) {
+                if (i == 1) {
+                    ctx.strokeStyle = "#00F";
+                }
+
+                ctx.beginPath();
+                ctx.arc(250 + data[index].Frogs[i].PosX * 2, 250 + data[index].Frogs[i].PosY * 2, 7, 0, 2 * Math.PI, false);
+                ctx.fill();
+                ctx.stroke();
+
+                for (var b in data[index].Frogs[i].Bullets) {
+                    ctx.moveTo(250 + data[index].Frogs[i].Bullets[b].PosX * 2, 250 + data[index].Frogs[i].Bullets[b].PosY * 2);
+                    ctx.lineTo(250 + data[index].Frogs[i].Bullets[b].TargetX * 2, 250 + data[index].Frogs[i].Bullets[b].TargetY * 2);
+                    ctx.stroke();
+                }
+            }
+        }
+   </script>
+</body>
+</html>

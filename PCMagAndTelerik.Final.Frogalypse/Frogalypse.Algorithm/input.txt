@@ -1,0 +1,6 @@
+﻿73 -> pool radius
+-65 -25 0 -> my frog - x y reload
+10 0 0 -> enemy frog - x y reload
+2 -> number of bullets
+65 8 55 8 -> horizontal  
+77 -15 77 -5 - >vertical  

@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta name="description" content="PC Magazine and Telerik contest - 2 round" />
+	<meta name="keywords" content="Game of life, contest, Telerik" />
+	<meta name="author" content="Pavel Sotirov, psotirov, p.sotirov@mail.bg" />
+	<title>Водонедорасли - psotirov</title>
+	<link rel="stylesheet" href="styles.css">
+ </head>
+<body>
+        <header>
+            <h1>Водонедорасли - psotirov</h1>
+			<nav>
+				<ul>
+						<li><a href="index.html">Начало</a></li>
+						<li><a href="algae.html">За водонедораслите</a></li>
+						<li><a href="grow.html">Развитие</a></li>
+						<li id="selected"><a href="plant.html">Отглеждане</a></li>
+						<li><input type="button" value = "Визуализация" onclick="window.open('show.html', '_blank',
+								'height=460, width=600, location=no, menubar=no, resizable=no, status=no, toolbar=no')" ></li>
+				</ul>			
+			</nav>
+        </header>
+		
+		<div id="wrapper">
+        <section>
+            <p>Астронавтите са си поставили следната цел – да подредят начално състояние на всяка локва с водонедорасли, така че след определен брой 
+			единици време (ходове), поколението в тази локва да има възможно най-голямо качество. Трябва да се отбележи, че астронавтите не могат да 
+			променят местоположението на храната в локвата. Също така могат да подредят само веднъж водонедораслите в локвата – в началото. Оттам 
+			нататък оставят водонедораслите да се развиват, евентуално да изяждат храна, и в крайна сметка след определено време астронавтите премерват 
+			качеството на локвата по гореописания начин.</p>
+			<img id="big" alt="Algae planting" src="res/algae_04.jpg" width="900" height="240" />
+			<p>Очевидно създаването на "посеви" на случен принцип би довело до плачевни резултати, тъй като в общия случай поколението има тенденция 
+			към загиване или преход към ограничен брой неподвижни или осилиращи острови. За осигуряването на максимално качество на локвата алгоритъмът
+			трябва да изпълни следните условия:</p>
+			<ul>
+				<li>да имаме в последния ход количество водонедорасли, организирани в неподвижни или осцилиращи острови, като тяхното количество 
+				трябва да бъде по-голямо или равно на входното (ако това е възможно разбира се).</li>
+				<li>да бъде изядена цялата или почти цялата храна</li>
+			</ul>
+			<p>При разглеждане на възможните случаи (които не могат да бъдат обходени всичките в разумно време) условно ще раздробим задачата на 
+			множество подзадачи, всяка работеща със собствен алгоритъм. Идеята е да съставим няколко опростени, но бързи алгоритъма, които биха дали 
+			задоволителен резултат.</p>
+			<p>Тъй като максималния брой живи клетки, разпределени върху полето не може да надхвърля (N*N/2)+N, то разделяме алгоритъма на две части:</p>
+			<ol>
+				<li>Ако гъстотата на водонедораслите е над 44% (което е плътността на шаблона БЛОК), т.е. V/(N*N) > 0.44 - в този случай определяме 
+				максималния регион от полето, който ще запълним с фактор 0.5 и диагонално разположение на водонедораслите( ХХХ-шаблон). Запълваме 
+				последователно всички останали области "плътно". Стремим се да постигнем диагонална симетрия, като по този начин шансът на поколението 
+				да оцелее е доста висок. Определяме размера на региона за ХХХ-шаблона по следния начин:<br />
+				Брой празни полета - N*N - V. Следователно необходимия брой клетки е 2*(N*N - V). Матрицата е със страна коренувания брой клетки.<br />
+				Например при поле 5x5 и 20 водонедорасли за разполагане, то N*N - V = 5 -> round(sqrt(10)) = 3.<br />
+				Заделяме поле 3х3, в които ще разположим 4 елемента и запълваме плътно останалите 16 позиции.
+				<table class="puddle">
+					<tr><td class="F">+</td><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="F">+</td></tr>
+					<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="F">+</td><td class="F">+</td></tr>
+					<tr><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td></tr>
+					<tr><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="F">+</td></tr>
+					<tr><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="F">+</td></tr>																														
+				</table></li>
+				<li>Проверяваме дали водонедораслите са повече от храната и разделяме алгоритъма на още две части. Ако условието е изпълнено, 
+				поставяме водонедорасли върху храната и допълваме максимално много от тях до неподвижни комбинации (Г-тройка, която става блок) 
+				с останалите свободни елементи.
+							<table>
+								<tr><th>Начало</th><th>Време+1</th><th>Време+2</th></tr>
+								<tr>
+									<td> <!--Model 1 - Initial -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+										</table>
+									</td>
+									<td> <!--Model 1 - Time + 1 -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td></tr>																														
+										</table>
+									</td>
+									<td> <!--Model 1 - Time + 2 -->
+										<table class="puddle">
+											<tr><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td></tr>																														
+										</table>
+									</td>
+								</tr>
+							</table>				
+				</li>
+				<li>Ако водонедораслите са по-малко или равни на храната търсим за познати шаблони:
+					<ul>
+						<li>ако имаме кръст от храна (+) поставяме мигалка (3 водонедорасли за 5 храна)
+							<table>
+								<tr><th>Начало</th><th>Време+1</th><th>Време+2</th></tr>
+								<tr>
+									<td> <!--Model 1 - Initial -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="S">F</td><td class="S">F</td><td class="S">F</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+										</table>
+									</td>
+									<td> <!--Model 1 - Time + 1 -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+										</table>
+									</td>
+									<td> <!--Model 1 - Time + 2 -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+										</table>
+									</td>
+								</tr>
+							</table>	
+						</li>
+						<li>ако имаме диагонална линия (/ или \), пускаме в началото й ПЛАНЕР (glider). 
+						Очевидно линията трябва да е по-дълга от 5 елемента.
+							<table>
+								<tr><th>Начало</th><th>Време+1</th><th>Време+17</th></tr>
+								<tr>
+									<td> <!--Model 2 - Initial -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>																														
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td></tr>																														
+										</table>
+									</td>
+									<td> <!--Model 2 - Time + 1 -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td><td class="E">0</td></tr>																														
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="S">F</td></tr>																														
+										</table>
+									</td>
+									<td> <!--Model 2 - Time + 17 -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td></tr>																														
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="F">+</td></tr>																														
+										</table>
+									</td>
+								</tr>
+							</table>							
+						</li>
+						<li>ако имаме хоризонтална или вертикална линия (- или |), пускаме лек кораб (LWSS). 
+						Линията трябва да е по-дълга от 10 елемента.
+							<table>
+								<tr><th>Начало</th><th>Време+1</th><th>Време+5</th></tr>
+								<tr>
+									<td> <!--Model 3 - Initial -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="S">F</td><td class="S">F</td><td class="S">F</td><td class="S">F</td><td class="S">F</td><td class="S">F</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+										</table>
+									</td>
+									<td> <!--Model 3 - Time + 1 -->
+										<table class="puddle">
+											<tr><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="S">F</td><td class="S">F</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+										</table>
+									</td>
+									<td> <!--Model 3 - Time + 5 -->
+										<table class="puddle">
+											<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="F">+</td><td class="F">+</td><td class="F">+</td><td class="F">+</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>
+											<tr><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td><td class="E">0</td></tr>																														
+										</table>
+									</td>
+								</tr>
+							</table>
+						</li>
+					</ul>
+				<li>Разпределяме останалите елементи като неподвижни групи върху колкото се може повече клетки с храна.</li>
+			</ol>
+        </section>
+				
+		<aside>
+			<h4>Полезни връзки</h4>
+			<ul>
+				<li><a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life" target="_blank">Играта на Живота в Wikipedia</a></li>
+				<li><a href="http://www.ibiblio.org/lifepatterns/october1970.html" target="_blank">Анонсът на играта през 1970г</a></li>
+				<li><a href="http://www.math.com/students/wonders/life/life.html" target="_blank">Статия по темата в math.com</a></li>
+				<li><a href="http://www.ibiblio.org/lifepatterns/" target="_blank">Приложения и Java аплети, демонстриращи развитието на "организмите"</a></li>
+				<li><a href="http://cafaq.com/lifefaq/index.php" target="_blank">Celular automata FAQ</a></li>				
+				<li><a href="http://jigsaw.w3.org/css-validator/check/referer">
+					<img width="88" height="31"	src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Valid HTML5 and CSS!" /></a></li>
+				</ul>
+		</aside>
+		</div>
+		
+        <footer>
+            <p>ЖИВА-БИРА InterGalactic Bottling Company EOOD</p>
+            <p>111-1234 9876 0000 BULGARISTAN Outer Limits galaxy, KOSTAFORD solar system, quadrant 1-15-145</p>
+            <address>Written by <a href="mailto:p.sotirov@mail.bg">psotirov</a>  &copy; 2013 All lefts reserved.</address>    
+        </footer>	
+</body>
+</html>

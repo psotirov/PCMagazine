@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frogalypse.Algorithm", "Frogalypse.Algorithm\Frogalypse.Algorithm.csproj", "{385727DC-C1D6-45D1-8E3F-F7058EFF2252}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frogalypse.Presentation", "Frogalypse.Presentation\Frogalypse.Presentation.csproj", "{C459CF03-B7B6-4187-90A2-D9574CC63C5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{385727DC-C1D6-45D1-8E3F-F7058EFF2252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{385727DC-C1D6-45D1-8E3F-F7058EFF2252}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{385727DC-C1D6-45D1-8E3F-F7058EFF2252}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{385727DC-C1D6-45D1-8E3F-F7058EFF2252}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C459CF03-B7B6-4187-90A2-D9574CC63C5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C459CF03-B7B6-4187-90A2-D9574CC63C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C459CF03-B7B6-4187-90A2-D9574CC63C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C459CF03-B7B6-4187-90A2-D9574CC63C5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
